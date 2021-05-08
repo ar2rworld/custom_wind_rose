@@ -1,0 +1,1 @@
+Create your custom Wind-rose at http://ec2-3-141-45-250.us-east-2.compute.amazonaws.com:3005/

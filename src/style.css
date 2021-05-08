@@ -1,0 +1,12 @@
+line{
+  stroke:black;
+  stroke-width: 1px;
+}
+line.outline{
+  stroke: blue;
+  stroke-width: 3px;
+}
+line.scale{
+  stroke:red;
+  stroke-width: 3px;
+}
