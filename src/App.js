@@ -165,41 +165,46 @@ class App extends React.Component{
     
   }
   render(){
-    return(<div  style={{margin:"auto",textAlign:"center"}}>
-    <h2>Hello there! Add new vector to you custom Wind-rose:</h2>
-    <form onSubmit={this.handleForm}>
-    <p>Label: <input name="object" onChange={this.onChange} type="text" required/> 
-    Value: <input name="point"   onChange={this.onChange} min="0" max={this.state.max} type="number" step={this.state.step} required/>
-    <input type="submit" value="Add"/>
-    </p>
-    </form>
-    <p>Step<input name="step" onChange={this.onChange} min="0.1" type="number" step="any" value={this.state.step} /><br/>
-    Max value: <input name="max" onChange={this.onChange} min="0" type="number" step="any" value={this.state.max} /> units <input name="unit" onChange={this.onChange} type="text" step="any" value={this.state.unit} />
-    <br/>
-    {/*scale <input name="scale" onChange={this.onChange} type="checkbox" value={this.state.scale} />
-    scale X coordinate:<input name="sX" onChange={this.onChange} type="number" step="any" value={this.state.sX} />
-    scale Y coordinate:<input name="sY" onChange={this.onChange} type="number" step="any" value={this.state.sY} />*/}
-    Display dots <input name="displayDots" onChange={this.onChange} type="checkbox" checked={this.state.displayDots} />
-    dots color <input name="dotsFill" onChange={this.onChange} type="text" value={this.state.dotsFill}/>
-    dots raduis <input name="dotRadius" onChange={this.onChange} min="1" type="number" step="1" value={this.state.dotRadius} />
-    dots text color <input name="dotsTextColor" onChange={this.onChange} type="text" value={this.state.dotsTextColor}/>
-    <br/>
-    svgFontSize: <input name="svgFontSize" onChange={this.onChange} min="1" type="number" step="1" value={this.state.svgFontSize} />px
-    </p>
-    <div key="123123123123" style={{}}>
-    <ListPoints removeObj={this.removeObj} objects={this.state.objects} points={this.state.values}/>
-    <svg id="svg" style={{height:"600px", width:"600px", backgroundColor:"grey", fontSize:this.state.svgFontSize+"px"}}>
-      <text key="a" x="10" y="20">Max value: {this.state.max} {this.state.unit}</text>
-      <circle cx="300" cy="300" r="150" fill="white" strokeWidth="4"/>
-      {this.calcItems().map((item) => <line key={item.key} x1="300" y1="300" x2={item.x} y2={item.y}/>)}
-      {this.calcOutline().map((item) => <line className={item.cName} key={item.key} x1={item.x1} y1={item.y1} x2={item.x2} y2={item.y2}/>)}
-      {this.addText().map((item)=> <text key={item.key} x={item.x1} y={item.y1}>{item.text}</text>)}
-      {this.state.displayDots?this.calcItems().map((i)=><circle cx={i.x} cy={i.y} r={this.state.dotRadius} fill={this.state.dotsFill} strokeWidth="4"/>):""}
-      {this.state.displayDots?this.calcItems().map((i)=><text fill={this.state.dotsTextColor} x={i.x-4} y={i.y+4} strokeWidth="4">{this.state.values[i.key-10000]}</text>):""}
-      
-      {/*<text key="sa" x={this.state.sX-30} y={this.state.sY+20}>{this.state.max} {this.state.unit}</text>*/}
-      {/*this.state.scale?this.scales().map((item)=> <circle cx={item.x} cy={item.y} r="5" fill="red" strokeWidth="4"/>):""*/}
-    </svg>
+    return(<div className="wrapper" style={{margin:"auto",textAlign:"center"}}>
+    <div className="c1">
+      <ListPoints removeObj={this.removeObj} objects={this.state.objects} points={this.state.values}/>
+    </div>
+    <div className="c2">
+      <h2>Hello there! Add new vector to you custom Wind-rose:</h2>
+      <form onSubmit={this.handleForm}>
+      <p>Label: <input name="object" onChange={this.onChange} type="text" required/> 
+      Value: <input name="point"   onChange={this.onChange} min="0" max={this.state.max} type="number" step={this.state.step} required/>
+      <input type="submit" value="Add"/>
+      </p>
+      </form>
+      <p>Step<input name="step" onChange={this.onChange} min="0.1" type="number" step="any" value={this.state.step} /><br/>
+      Max value: <input name="max" onChange={this.onChange} min="0" type="number" step="any" value={this.state.max} /> units <input name="unit" onChange={this.onChange} type="text" step="any" value={this.state.unit} />
+      <br/>
+      {/*scale <input name="scale" onChange={this.onChange} type="checkbox" value={this.state.scale} />
+      scale X coordinate:<input name="sX" onChange={this.onChange} type="number" step="any" value={this.state.sX} />
+      scale Y coordinate:<input name="sY" onChange={this.onChange} type="number" step="any" value={this.state.sY} />*/}
+      Display dots <input name="displayDots" onChange={this.onChange} type="checkbox" checked={this.state.displayDots} />
+      dots color <input name="dotsFill" onChange={this.onChange} type="text" value={this.state.dotsFill}/>
+      dots raduis <input name="dotRadius" onChange={this.onChange} min="1" type="number" step="1" value={this.state.dotRadius} />
+      dots text color <input name="dotsTextColor" onChange={this.onChange} type="text" value={this.state.dotsTextColor}/>
+      <br/>
+      svgFontSize: <input name="svgFontSize" onChange={this.onChange} min="1" type="number" step="1" value={this.state.svgFontSize} />px
+      </p>
+      <div key="123123123123" style={{}}>
+      <svg id="svg" style={{height:"600px", width:"600px", backgroundColor:"grey", fontSize:this.state.svgFontSize+"px"}}>
+        <text key="a" x="10" y="20">Max value: {this.state.max} {this.state.unit}</text>
+        <circle cx="300" cy="300" r="150" fill="white" strokeWidth="4"/>
+        {this.calcItems().map((item) => <line key={item.key} x1="300" y1="300" x2={item.x} y2={item.y}/>)}
+        {this.calcOutline().map((item) => <line className={item.cName} key={item.key} x1={item.x1} y1={item.y1} x2={item.x2} y2={item.y2}/>)}
+        {this.addText().map((item)=> <text key={item.key} x={item.x1} y={item.y1}>{item.text}</text>)}
+        {this.state.displayDots?this.calcItems().map((i)=><circle cx={i.x} cy={i.y} r={this.state.dotRadius} fill={this.state.dotsFill} strokeWidth="4"/>):""}
+        {this.state.displayDots?this.calcItems().map((i)=><text fill={this.state.dotsTextColor} x={i.x-4} y={i.y+4} strokeWidth="4">{this.state.values[i.key-10000]}</text>):""}
+        
+        {/*<text key="sa" x={this.state.sX-30} y={this.state.sY+20}>{this.state.max} {this.state.unit}</text>*/}
+        {/*this.state.scale?this.scales().map((item)=> <circle cx={item.x} cy={item.y} r="5" fill="red" strokeWidth="4"/>):""*/}
+      </svg>
+      <p style={{padding:"0% 5%", margin:"3%"}}>Source: <a href="https://github.com/ar2rworld/custom_wind_rose">https://github.com/ar2rworld/custom_wind_rose</a></p>
+    </div>
     </div>
   </div>)}
 }
