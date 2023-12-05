@@ -14,3 +14,7 @@ line.scale{
   stroke:red;
   stroke-width: 3px;
 }
+input {
+  margin: 0.5%;
+  padding: 5px;
+}
