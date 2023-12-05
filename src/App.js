@@ -12,20 +12,13 @@ class App extends React.Component{
     }
     this.onChange=this.onChange.bind(this)
     this.handleForm=this.handleForm.bind(this)
-    //this.calcItems=this.calcItems.bind(this)
-    //this.calcOutline=this.calcOutline.bind(this)
     this.addText=this.addText.bind(this);
   }
-  /*getDerivedStateFromProps(){
-    this.calcItems();
-    console.log(this.state)
-  }*/
   handleForm=(e)=>{
     e.preventDefault();
     this.setState({objects:this.state.objects.concat(this.state.object),
       points:this.state.points.concat(Number(this.state.point)>=this.state.max?1:Number(this.state.point/this.state.max)),
       values:this.state.values.concat(this.state.point)})
-    console.log(this.state);
   }
   calcItems=()=>{
     var Tindex=Array.from(Array(this.state.points.length).keys());
@@ -39,7 +32,6 @@ class App extends React.Component{
         temp-=Math.PI/2;
         Tx2=Math.cos(temp)*l +300;
         Ty2=Math.sin(temp)*l +300;
-        //console.log(temp)
       }else if(temp<=Math.PI){
         temp-=Math.PI/2;
         Tx2=Math.cos(temp)*l +300;
@@ -53,36 +45,25 @@ class App extends React.Component{
         Tx2=Math.cos(temp)*l +300;
         Ty2=Math.sin(temp)*l +300;
       }
-      //this.setState({points: this.state.points.concat({x:Tx2,y:Ty2})})
-      //this.setState({points})
-      //console.log(points)
-      //return(<line key={i} x1="300" y1="300" x2={Tx2} y2={Ty2}/>)
       return({key:i+10000, x:Tx2, y:Ty2})
     })
-    //console.log(items)
-    //this.setState({items});
     return items;
   }
   calcOutline=()=>{
-    //var outline=[{cName:"outline", key:100, x1:1, y1:1, x2:211, y2:231}];
     var outline=[];
     var points=this.calcItems();
-    var points=this.calcItems();//this.state.items?this.state.items:
     for(let i=1; i<points.length; i+=1){
       var Tx2=points[i].x;
       var Ty2=points[i].y;
       var Tx1=points[i-1].x;
       var Ty1=points[i-1].y;
-      outline.push({cName:"outline", key:i+1000, x1:Tx1, y1:Ty1, x2:Tx2, y2:Ty2});
+      outline.push({cName:"outline", key:i, x1:Tx1, y1:Ty1, x2:Tx2, y2:Ty2});
     }
-    //outline.push(<line className="outline" key={21*132} x1={points[0].x} y1={points[0].y} x2={points[points.length-1].x} y2={points[points.length-1].y}/>)
     if(points.length)
       outline.push({cName:"outline", key:9999999, x1:points[0].x,y1:points[0].y, x2:points[points.length-1].x, y2:points[points.length-1].y});
-    //console.log(outline);
     return outline;
   }
   addText=()=>{
-    //var outline=[{cName:"outline", key:100, x1:1, y1:1, x2:211, y2:231}];
     var outline=[];
     var points=this.calcItems();
     var labels=this.state.objects;
@@ -102,23 +83,19 @@ class App extends React.Component{
         Tx1-=30;
         Ty1+=30;
       }
-      outline.push({cName:"label",text:this.state.objects[i], key:i+3000, x1:Tx1, y1:Ty1});
+      outline.push({cName:"label",text:this.state.objects[i], key:i, x1:Tx1, y1:Ty1});
     }
-    //outline.push(<line className="outline" key={21*132} x1={points[0].x} y1={points[0].y} x2={points[points.length-1].x} y2={points[points.length-1].y}/>)
-    //outline.push({cName:"outline", key:9999999, x1:points[0].x,y1:points[0].y, x2:points[points.length-1].x, y2:points[points.length-1].y});
-    //console.log(outline);
     return outline;
   }
-  removeObj=(i)=>{
-    console.log(i)
+  removeObj = (i)=>{
     this.setState({points:this.deleteElement(this.state.points, i)});
     this.setState({objects:this.deleteElement(this.state.objects, i)});
     this.setState({values:this.deleteElement(this.state.values, i)});
   }
-  deleteElement=(arr, index)=>{
-    var temp=[];
-    for(let i=0; i<arr.length; i+=1){
-      if(index!=i){
+  deleteElement = (arr, index) => {
+    var temp = [];
+    for ( let i=0; i < arr.length; i += 1) {
+      if(index != i){
         temp.push(arr[i]);
       }
     }
@@ -161,50 +138,42 @@ class App extends React.Component{
       this.setState({points:this.state.points.map(x => x*(this.state.max/value))})
     }
     this.setState({[name]:value})
-    //console.log(this.state)
     
   }
   render(){
-    return(<div className="wrapper" style={{margin:"auto",textAlign:"center"}}>
-    <div className="c1">
+    return(
+    <div className="wrapper" style={{margin:"auto",textAlign:"center"}}>
+      <div className="c2">
+        <h2>Hello there! Add new vector to you custom Wind-rose:</h2>
+        <form onSubmit={this.handleForm}>
+        <p>Label: <input name="object" onChange={this.onChange} type="text" required/> 
+        Value: <input name="point"   onChange={this.onChange} min="0" max={this.state.max} type="number" step={this.state.step} required/>
+        <input type="submit" value="Add"/>
+        </p>
+        </form>
+        <p>Step<input name="step" onChange={this.onChange} min="0.1" type="number" step="any" value={this.state.step} /><br/>
+        Max value: <input name="max" onChange={this.onChange} min="0" type="number" step="any" value={this.state.max} /> units <input name="unit" onChange={this.onChange} type="text" step="any" value={this.state.unit} />
+        <br/>
+        Display dots <input name="displayDots" onChange={this.onChange} type="checkbox" checked={this.state.displayDots} />
+        dots color <input name="dotsFill" onChange={this.onChange} type="text" value={this.state.dotsFill}/>
+        dots raduis <input name="dotRadius" onChange={this.onChange} min="1" type="number" step="1" value={this.state.dotRadius} />
+        dots text color <input name="dotsTextColor" onChange={this.onChange} type="text" value={this.state.dotsTextColor}/>
+        <br/>
+        svgFontSize: <input name="svgFontSize" onChange={this.onChange} min="1" type="number" step="1" value={this.state.svgFontSize} />px
+        </p>
+        <div key="123123123123" style={{}}>
+        <svg id="svg" style={{height:"600px", width:"600px", backgroundColor:"grey", fontSize:this.state.svgFontSize+"px"}}>
+          <text key="a" x="10" y="20">Max value: {this.state.max} {this.state.unit}</text>
+          <circle cx="300" cy="300" r="150" fill="white" strokeWidth="4"/>
+          {this.calcItems().map((item) => <line key={item.key} x1="300" y1="300" x2={item.x} y2={item.y}/>)}
+          {this.calcOutline().map((item) => <line className={item.cName} key={item.key} x1={item.x1} y1={item.y1} x2={item.x2} y2={item.y2}/>)}
+          {this.addText().map((item)=> <text key={item.key} x={item.x1} y={item.y1}>{item.text}</text>)}
+          {this.state.displayDots?this.calcItems().map((i)=><circle cx={i.x} cy={i.y} r={this.state.dotRadius} fill={this.state.dotsFill} strokeWidth="4"/>):""}
+          {this.state.displayDots?this.calcItems().map((i)=><text fill={this.state.dotsTextColor} x={i.x-4} y={i.y+4} strokeWidth="4">{this.state.values[i.key-10000]}</text>):""}
+        </svg>
+        <p style={{padding:"0% 5%", margin:"3%"}}>Source: <a href="https://github.com/ar2rworld/custom_wind_rose">https://github.com/ar2rworld/custom_wind_rose</a></p>
+      </div>
       <ListPoints removeObj={this.removeObj} objects={this.state.objects} points={this.state.values}/>
-    </div>
-    <div className="c2">
-      <h2>Hello there! Add new vector to you custom Wind-rose:</h2>
-      <form onSubmit={this.handleForm}>
-      <p>Label: <input name="object" onChange={this.onChange} type="text" required/> 
-      Value: <input name="point"   onChange={this.onChange} min="0" max={this.state.max} type="number" step={this.state.step} required/>
-      <input type="submit" value="Add"/>
-      </p>
-      </form>
-      <p>Step<input name="step" onChange={this.onChange} min="0.1" type="number" step="any" value={this.state.step} /><br/>
-      Max value: <input name="max" onChange={this.onChange} min="0" type="number" step="any" value={this.state.max} /> units <input name="unit" onChange={this.onChange} type="text" step="any" value={this.state.unit} />
-      <br/>
-      {/*scale <input name="scale" onChange={this.onChange} type="checkbox" value={this.state.scale} />
-      scale X coordinate:<input name="sX" onChange={this.onChange} type="number" step="any" value={this.state.sX} />
-      scale Y coordinate:<input name="sY" onChange={this.onChange} type="number" step="any" value={this.state.sY} />*/}
-      Display dots <input name="displayDots" onChange={this.onChange} type="checkbox" checked={this.state.displayDots} />
-      dots color <input name="dotsFill" onChange={this.onChange} type="text" value={this.state.dotsFill}/>
-      dots raduis <input name="dotRadius" onChange={this.onChange} min="1" type="number" step="1" value={this.state.dotRadius} />
-      dots text color <input name="dotsTextColor" onChange={this.onChange} type="text" value={this.state.dotsTextColor}/>
-      <br/>
-      svgFontSize: <input name="svgFontSize" onChange={this.onChange} min="1" type="number" step="1" value={this.state.svgFontSize} />px
-      </p>
-      <div key="123123123123" style={{}}>
-      <svg id="svg" style={{height:"600px", width:"600px", backgroundColor:"grey", fontSize:this.state.svgFontSize+"px"}}>
-        <text key="a" x="10" y="20">Max value: {this.state.max} {this.state.unit}</text>
-        <circle cx="300" cy="300" r="150" fill="white" strokeWidth="4"/>
-        {this.calcItems().map((item) => <line key={item.key} x1="300" y1="300" x2={item.x} y2={item.y}/>)}
-        {this.calcOutline().map((item) => <line className={item.cName} key={item.key} x1={item.x1} y1={item.y1} x2={item.x2} y2={item.y2}/>)}
-        {this.addText().map((item)=> <text key={item.key} x={item.x1} y={item.y1}>{item.text}</text>)}
-        {this.state.displayDots?this.calcItems().map((i)=><circle cx={i.x} cy={i.y} r={this.state.dotRadius} fill={this.state.dotsFill} strokeWidth="4"/>):""}
-        {this.state.displayDots?this.calcItems().map((i)=><text fill={this.state.dotsTextColor} x={i.x-4} y={i.y+4} strokeWidth="4">{this.state.values[i.key-10000]}</text>):""}
-        
-        {/*<text key="sa" x={this.state.sX-30} y={this.state.sY+20}>{this.state.max} {this.state.unit}</text>*/}
-        {/*this.state.scale?this.scales().map((item)=> <circle cx={item.x} cy={item.y} r="5" fill="red" strokeWidth="4"/>):""*/}
-      </svg>
-      <p style={{padding:"0% 5%", margin:"3%"}}>Source: <a href="https://github.com/ar2rworld/custom_wind_rose">https://github.com/ar2rworld/custom_wind_rose</a></p>
-    </div>
     </div>
   </div>)}
 }
